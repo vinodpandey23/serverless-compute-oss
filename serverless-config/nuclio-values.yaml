@@ -1,0 +1,14 @@
+platform:
+  config:
+    functions:
+      build:
+        registry: "localhost:5000"
+        s3Bucket: "functions"
+    secrets:
+      minio:
+        accessKey: minioadmin
+        secretKey: minioadmin123
+        endpoint: http://minio.serverless.svc.cluster.local:9000
+dashboard:
+  service:
+    type: LoadBalancer

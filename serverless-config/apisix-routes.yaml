@@ -1,0 +1,46 @@
+apiVersion: apisix.apache.org/v2
+kind: ApisixRoute
+metadata:
+  name: upload-function
+  namespace: serverless
+spec:
+  http:
+    - name: upload-to-minio
+      match:
+        paths:
+          - /upload-function
+        methods:
+          - POST
+      backends:
+        - serviceName: minio
+          servicePort: 9000
+      plugins:
+        - name: serverless-post-function
+          enable: true
+          config:
+            phase: access
+            functions:
+              - "return require('upload_function')"
+---
+apiVersion: apisix.apache.org/v2
+kind: ApisixRoute
+metadata:
+  name: nuclio-invoke
+  namespace: serverless
+spec:
+  http:
+    - name: invoke
+      match:
+        paths:
+          - /invoke
+        methods:
+          - POST
+      backends:
+        - serviceName: nuclio-dashboard
+          servicePort: 8070
+      plugins:
+        - name: proxy-rewrite
+          enable: true
+          config:
+            uri: /api/function_invocations
+

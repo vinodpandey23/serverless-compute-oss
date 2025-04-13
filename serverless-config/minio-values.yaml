@@ -1,0 +1,17 @@
+mode: standalone
+rootUser: minioadmin
+rootPassword: minioadmin123
+service:
+  type: LoadBalancer
+persistence:
+  enabled: false
+buckets:
+  - name: functions
+    policy: public
+resources:
+  requests:
+    memory: "128Mi"
+    cpu: "100m"
+  limits:
+    memory: "256Mi"
+    cpu: "200m"
